@@ -1,0 +1,74 @@
+services:
+  mongo-drinks:
+    image: mongo:latest
+    container_name: mongo-drinks
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_drinks_data:/data/db
+
+  mongo-clients:
+    image: mongo:latest
+    container_name: mongo-clients
+    ports:
+      - "27018:27017" # host:container
+    volumes:
+      - mongodb_clients_data:/data/db
+  
+  mysql-tab:
+    image: mysql:latest
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_tab_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123
+
+  drink-service:
+    container_name: drink-service
+    depends_on:
+      - mongo-drinks
+    ports:
+      - "8080:8080"
+    environment:
+      MONGODB_HOST: mongo-drinks
+      MONGODB_PORT: 27017
+    build:
+      context: ./drink-service
+      dockerfile: Dockerfile
+  
+  client-service:
+    container_name: client-service
+    depends_on:
+      - mongo-clients
+    ports:
+      - "8083:8080"
+    environment:
+      MONGODB_HOST: mongo-clients
+      MONGODB_PORT: 27017
+    build:
+      context: ./client-service
+      dockerfile: Dockerfile
+  
+  tab-service:
+    container_name: tab-service
+    depends_on:
+      - mysql-tab
+    ports:
+      - "8082:8080"
+    links:
+      - mysql-tab
+    environment:
+      MYSQL_DB_USERNAME: root
+      MYSQL_DB_PASSWORD: abc123
+      MYSQL_DB_HOST: mysql-tab
+      MYSQL_DB_PORT: 3306
+    build:
+      context: ./tab-service
+      dockerfile: Dockerfile
+
+volumes:
+  mongodb_drinks_data:
+  mongodb_clients_data:
+  mysql_tab_data:
+

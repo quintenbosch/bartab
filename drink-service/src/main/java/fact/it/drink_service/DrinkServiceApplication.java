@@ -1,13 +1,13 @@
-package fact.it.drink;
+package fact.it.drink_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DrinkApplication {
+public class DrinkServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DrinkApplication.class, args);
+		SpringApplication.run(DrinkServiceApplication.class, args);
 	}
 
 }

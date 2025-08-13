@@ -1,10 +1,10 @@
-package fact.it.tab;
+package fact.it.client_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TabApplicationTests {
+class ClientServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
